@@ -1,6 +1,6 @@
 let stars = [];
 let speed;
-let starLength = 1;
+let starLength = 400;
 let canvas = document.createElement('canvas');
 let canvasConfig = { canvas: canvas, width: 600, height: 400 };
 
@@ -11,19 +11,20 @@ function setup({ canvas, width, height }) {
     for (let i = 0; i < starLength; i++) {
         stars.push(new Star(canvas));
     }
-    return {ctx, width, height};
+    return { ctx, width, height };
 }
 
-function draw(canvas) {
-    canvas.speed = 1;
-    canvas.ctx.fillStyle = 'rgb(0, 0, 0)';
-    canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+function draw() {
+    canvasAndCtx.speed = 2;
+    canvasAndCtx.ctx.fillStyle = 'rgb(0, 0, 0)';
+    canvasAndCtx.ctx.fillRect(0, 0, canvasAndCtx.width, canvasAndCtx.height);
     for (const star of stars) {
-        star.update(canvas);
-        star.show(canvas);
+        star.update(canvasAndCtx);
+        star.show(canvasAndCtx);
     }
+    window.webkitRequestAnimationFrame(draw)
 }
+
 
 
 const canvasAndCtx = setup(canvasConfig);

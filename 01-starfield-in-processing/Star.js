@@ -7,25 +7,31 @@ class Star {
     }
 
     update(canvas) {
-        this.z = this.z - speed;
-        this.x = this.random(0, canvas.width);
-        this.y = this.random(0, canvas.height);
-        this.z = canvas.width;
-        this.pz = this.z;
+        this.z = this.z - canvas.speed;
+        if (this.z < 1) {
+            this.z = canvas.width;
+            this.x = this.random(0, canvas.width);
+            this.y = this.random(0, canvas.height);
+            this.pz = this.z;
+        }
     }
 
     show(canvas) {
-        console.log(this)
         canvas.ctx.fillStyle = 'rgb(255, 255, 255)';
         // Draw the ellipse
         canvas.ctx.beginPath();
 
-        // canvas.ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle[, anticlockwise]);
-        canvas.ctx.ellipse(this.x, this.y, 50, 50, 0, Math.PI * .99, Math.PI, true);
+        let sx = this.map(this.x / this.z, 0, 1, 0, canvas.width);
+        let sy = this.map(this.y / this.z, 0, 1, 0, canvas.height);
+        let r = this.map(this.z, 0, canvas.width, 16, 0);
+
+        canvas.ctx.ellipse(sx, sy, r, r, 0, Math.PI * .99, Math.PI, true);
         canvas.ctx.fill();
 
-        // let r = this.map(this.z, 0, canvas.width, 16, 0);
-        let r = this.map(5, 1, 100, 1, 10);
+        let px = this.map(this.x / this.pz, 0, 1, 0, this.width);
+        let py = this.map(this.y / this.pz, 0, 1, 0, this.height);
+
+        this.pz = this.z;
     }
 
     random(start, end) {
@@ -34,7 +40,15 @@ class Star {
     }
 
     map(currVal, startCurr1, stopCurr2, startTarget1, startTarget2) {
+        const currentValDiff = currVal - startCurr1
+        const currentDiff = stopCurr2 - startCurr1;
         
-        console.log(currVal, startCurr1, stopCurr2, startTarget1, startTarget2)
+        let targetDiff = (startTarget1 >= startTarget2)
+            ? startTarget1 - startTarget2
+            : startTarget2 - startTarget1;
+
+        let firstPer = (currentValDiff / currentDiff) * 100;
+        let result = (firstPer * targetDiff) / 100;
+        return targetDiff - result;
     }
 }
