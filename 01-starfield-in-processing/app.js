@@ -1,6 +1,6 @@
 let stars = [];
 let speed;
-let starLength = 400;
+let starLength = 10000;
 let canvas = document.createElement('canvas');
 let canvasConfig = { canvas: canvas, width: 600, height: 400 };
 
